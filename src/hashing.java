@@ -29,9 +29,13 @@ public class hashing {
     // globally available variables
     public static int arraySize; // array size
     public static String inputFilePath; // input file path
-    public static String outputFilePath; // output file path
+    public static String outputFilePath1; // output file path
+    public static String outputFilePath2; // output file path
+
     public static int lines; // line count
-    public static ArrayList<String> names = new ArrayList<String>(); // array for names
+    private static ArrayList<String> names = new ArrayList<String>(); // array for names
+    private static ArrayList<Integer> namesOut1 = new ArrayList<Integer>(); // array for hashed names 1
+    private static ArrayList<Integer> namesOut2 = new ArrayList<Integer>(); // array for hashed names 2
 
 
     public static void main(String args[]) {
@@ -49,9 +53,10 @@ public class hashing {
         System.out.println("|||   ||| ||   ||||     ||||");
         System.out.println("||||   |||||   ||||     ||||");
         System.out.println("|||||   ||||   |||||||||||||");
-        System.out.println("|||||    |||   |||||||||||||");
+        System.out.println("|||||    |||   |||||||||||||\n");
 
         specifications(); // ask for the user input
+        readFile(); // read the input file into an array list
         hashTheFile(); // import the file and do the hashing
         writeFile(); // write the file
 
@@ -76,8 +81,12 @@ public class hashing {
             inputFilePath = scan.next();
 
             // ask the user to specify the output file path
-            System.out.println("Enter the output file path: ");
-            outputFilePath = scan.next();
+            System.out.println("Enter the output file path (1): ");
+            outputFilePath1 = scan.next();
+
+            // ask the user to specify the output file path
+            System.out.println("Enter the output file path (2): ");
+            outputFilePath2 = scan.next();
 
         }
 
@@ -111,6 +120,8 @@ public class hashing {
             System.out.println("There are " + lines + " lines in the file."); // print the line count
             System.out.println("The input file contents have been saved to the array."); // print the line count
 
+            reader.close(); // close the reader
+
         }
 
         catch (Exception ex) {
@@ -127,9 +138,16 @@ public class hashing {
      */
     public static void hashTheFile() {
 
-        readFile();
+        /* could be for each loop */
+        /* not sure if this is correct */
 
-        //reader.close(); // probably need to specify after hashing
+        for (int i = 0; i < names.size(); i++) { // needs to be changed to array size
+
+            String toHash = names.get(i);
+            System.out.println(toHash.hashCode());
+            namesOut2.add(toHash.hashCode());
+
+        }
 
     }
 
@@ -140,15 +158,17 @@ public class hashing {
 
         try {
 
-            BufferedWriter br = new BufferedWriter(new FileWriter(outputFilePath));
+            /* there's probably a nice way to print out the array list instead of converting to array */
+
+            BufferedWriter br = new BufferedWriter(new FileWriter(outputFilePath2));
             StringBuilder sb = new StringBuilder();
 
-            String[] namesOut = new String[names.size()]; // create array for hashed names
+            Integer[] namesOut = new Integer[names.size()]; // create array for hashed names
 
             // copy the content into the new array
             for (int i = 0; i < names.size(); i++ ) {
 
-                namesOut[i] = names.get(i);
+                namesOut[i] = namesOut2.get(i);
 
             }
 
@@ -163,7 +183,7 @@ public class hashing {
             br.close(); // close the writer */
 
             // print message
-            System.out.println("A file has been written to " + outputFilePath);
+            System.out.println("A file has been written to " + outputFilePath2);
 
 
         }

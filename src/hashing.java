@@ -36,6 +36,7 @@ public class hashing {
     private static ArrayList<String> names = new ArrayList<String>(); // array for names
     private static ArrayList<Integer> namesOut1 = new ArrayList<Integer>(); // array for hashed names 1
     private static ArrayList<Integer> namesOut2 = new ArrayList<Integer>(); // array for hashed names 2
+    private static ArrayList<String> namesOutString2 = new ArrayList<String>(); // @Note: elie change
 
 
     public static void main(String args[]) {
@@ -138,16 +139,60 @@ public class hashing {
      */
     public static void hashTheFile() {
 
-        /* could be for each loop */
-        /* not sure if this is correct */
+        for (int i = 0; i < names.size(); i++) {
+
+            String currentString = names.get(i);
+            int lengthOfName = currentString.length();
+            int sumAscii = 0; //Use to sum values of char asciis in string
+
+            for (int j = 0; j < lengthOfName; j++ ) {
+                char currentChar = currentString.charAt(j);
+
+                //Convert char to ascii code by just casting to int
+                int currentCharAscii = (int) currentChar;
+                sumAscii += currentCharAscii;
+
+
+            }
+
+            // @Note: namesOut1 will be our temp output of Ints
+            int hashValue = sumAscii % arraySize;
+            namesOut1.add(hashValue); //Output
+
+            checkForCollisions(namesOut1);
+
+
+        }
 
         for (int i = 0; i < names.size(); i++) { // needs to be changed to array size
 
             String toHash = names.get(i);
             System.out.println(toHash.hashCode());
-            namesOut2.add(toHash.hashCode());
+            namesOut2.add(toHash.hashCode() % arraySize);
+
+            //@Note: Check for collisions
 
         }
+
+    }
+
+
+    /**
+     *
+     * @param intArray (which is your names array that you got from the two hash methods
+     *
+     * Order the ArrayList of Integers, and check if there are collisions in array
+     * In the sorted array, collisions will occur when you have consecutives entries that are equal
+     *
+     * Copy into an array of strings (that will be your output) accordingly
+     *                 If no collision:just copy new val to new array
+     *                 if collision: copy to corresponding index (where 
+     */
+
+
+    public static void checkForCollisions(ArrayList<Integer> intArray) {
+
+
 
     }
 
@@ -160,7 +205,7 @@ public class hashing {
 
             /* there's probably a nice way to print out the array list instead of converting to array */
 
-            BufferedWriter br = new BufferedWriter(new FileWriter(outputFilePath2));
+            BufferedWriter br = new BufferedWriter(new FileWriter(outputFilePath1));
             StringBuilder sb = new StringBuilder();
 
             Integer[] namesOut = new Integer[names.size()]; // create array for hashed names
@@ -168,7 +213,7 @@ public class hashing {
             // copy the content into the new array
             for (int i = 0; i < names.size(); i++ ) {
 
-                namesOut[i] = namesOut2.get(i);
+                namesOut[i] = namesOut1.get(i);
 
             }
 
@@ -183,7 +228,7 @@ public class hashing {
             br.close(); // close the writer */
 
             // print message
-            System.out.println("A file has been written to " + outputFilePath2);
+            System.out.println("A file has been written to " + outputFilePath1);
 
 
         }

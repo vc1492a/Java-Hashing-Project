@@ -236,8 +236,9 @@ public class hashing {
 		 * BUT only increases in increments of 1. Therefore, if hash codes go from 2 to 4, the counter
 		 * will help us add two EMPTY LINES.
 		 */
-		
 		int emptyCounter = 0; 
+		
+		
 
 		//Sort the input array. 
 		Collections.sort(intArray);
@@ -294,7 +295,22 @@ public class hashing {
 			 *  we need to add two EMPTY LINES (fro 98 and 99). 
 			 */
 			
+			
+			/*
+			 * PERFORMANCE METRIC 
+			 * REQUIREMENTS PART 4
+			 * Just calculate total number of collisions, collisions / size of original array and numb of emtpy lines
+			 * @Note: For now just add this as last string in array
+			 */
+			stringList.add("Total number of collisions is equal to: " + numberDuplicates);
+			float proportionOfDuplicates = (float) numberDuplicates / intArray.size();
+			stringList.add("Total # of collisions divided by total number of elements: " + proportionOfDuplicates);
+			stringList.add("Total number of empty lines is equal to: " + emptyCounter);
+
+				
 		}
+		
+		
 		return stringList; 
 	}
 

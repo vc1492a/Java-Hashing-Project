@@ -169,6 +169,7 @@ public class hashing {
 			// @Note: namesOut1 will be our temp output of Ints
 			int hashValue = sumAscii % arraySize;
 			namesOut1.add(hashValue); //Output
+
 		}
 
 
@@ -189,12 +190,16 @@ public class hashing {
 		//@NOTE @TEST
 		System.out.println("\n\n\nNAMEOUTSTRING1");
 		for (String s : namesOutString1) {
+
 			System.out.println(s);
+
 		}
 		
 		System.out.println("\n\n\n\nNAMEOUTSTRING2");
 		for (String s : namesOutString2) {
+
 			System.out.println(s);
+
 		}
 
 	}
@@ -239,24 +244,20 @@ public class hashing {
 		 * BUT only increases in increments of 1. Therefore, if hash codes go from 2 to 4, the counter
 		 * will help us add two EMPTY LINES.
 		 */
-		int emptyCounter = 0; 
-		
-		
+		int emptyCounter = 0;
 
 		//Sort the input array. 
 		Collections.sort(intArray);
 
-
 		//Check if the array size is greater than 0 
 		if (intArray.size() > 0) { //Add the first element to your new STRING array 
 			stringList.add(String.valueOf(intArray.get(0)));
-			
-
 
 			for (int i = 1; i < intArray.size(); i++) {
 
 				//Check if current val is equal to the first occurence of a value.
-				if (intArray.get(indexFirstOccurence) == intArray.get(i)) {
+				if (intArray.get(indexFirstOccurence).equals(intArray.get(i))) {
+
 					//We do not need to increment our counter here since we have cons. equal values. 
 					//Increment number of collisions that you have
 					numberDuplicates++;
@@ -268,7 +269,11 @@ public class hashing {
 					//Now add value to the proper index in the string array with space and comma.
 					stringList.set(i-numberDuplicates+emptyCounter,
 							tempString + ", " + String.valueOf(intArray.get(i)));
-				} else {
+
+				}
+
+                else {
+
 					//Need to check if the value that we have is equal to the value before +1
 					if (intArray.get(i) == intArray.get(i-1) + 1) {//No need to change increment our counter
 						//Change index first occurence
@@ -277,18 +282,25 @@ public class hashing {
 						//Add that value to your string array (in correct position of course!)
 						//@Note: explain how decided to place values where. 
 						stringList.add(i-numberDuplicates+emptyCounter, String.valueOf(intArray.get(i)));
-					} else {
+
+					}
+
+                    else {
 						 //Just add an empty line here and increment counter while array(i+1) != array(i)+1
 						for (int lastValue = intArray.get(i-1)+1; lastValue < intArray.get(i); lastValue++) {
+
 							stringList.add(i-numberDuplicates+emptyCounter, "LINE EMPTY");
 							emptyCounter++;
+
 						}
 					
 						//Now add the specific entry 
 						indexFirstOccurence = i;
 						stringList.add(i-numberDuplicates+emptyCounter, String.valueOf(intArray.get(i)));
 					}
+
 				}
+
 			}
 			/*
 			 *  @NOTE Might need to add for loop here to check if max 
@@ -347,7 +359,6 @@ public class hashing {
 
             // print message
             System.out.println("A file has been written to " + outputFilePath1 + " and " + outputFilePath2);
-
 
 		}
 

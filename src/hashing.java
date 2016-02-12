@@ -226,6 +226,18 @@ public class hashing {
 
 		int indexFirstOccurence = 0; //The index of the first occurence of a specific int in your list.
 		int numberDuplicates = 0; //TOTAL number of duplicates in your input array.
+		
+		/* 
+		 * part 3)d) of performance requirements:
+		 * If no string from the input has been mapped to a particular line,
+		 * line should contain "EMPTY LINE".
+		 * 
+		 * To do this, add a counter that goes from your min value to your max value (in hash map)
+		 * BUT only increases in increments of 1. Therefore, if hash codes go from 2 to 4, the counter
+		 * will help us add two EMPTY LINES.
+		 */
+		
+		int emptyCounter = 0; 
 
 		//Sort the input array. 
 		Collections.sort(intArray);
@@ -234,32 +246,54 @@ public class hashing {
 		//Check if the array size is greater than 0 
 		if (intArray.size() > 0) { //Add the first element to your new STRING array 
 			stringList.add(String.valueOf(intArray.get(0)));
+			
 
 
 			for (int i = 1; i < intArray.size(); i++) {
 
 				//Check if current val is equal to the first occurence of a value.
 				if (intArray.get(indexFirstOccurence) == intArray.get(i)) {
+					//We do not need to increment our counter here since we have cons. equal values. 
 					//Increment number of collisions that you have
-
 					numberDuplicates++;
 
 					//Create a temporary String that will contain what is already in the index where you want to add 
 					//value that collided.
-					String tempString = stringList.get(i-numberDuplicates);
+					String tempString = stringList.get(i-numberDuplicates+emptyCounter);
 
 					//Now add value to the proper index in the string array with space and comma.
-					stringList.set(i-numberDuplicates,
+					stringList.set(i-numberDuplicates+emptyCounter,
 							tempString + ", " + String.valueOf(intArray.get(i)));
 				} else {
-					//Change index first occurence
-					indexFirstOccurence = i;
+					//Need to check if the value that we have is equal to the value before +1
+					if (intArray.get(i) == intArray.get(i-1) + 1) {//No need to change increment our counter
+						//Change index first occurence
+						indexFirstOccurence = i;
 
-					//Add that value to your string array (in correct position of course!)
-					//@Note: explain how decided to place values where. 
-					stringList.add(i-numberDuplicates, String.valueOf(intArray.get(i)));
+						//Add that value to your string array (in correct position of course!)
+						//@Note: explain how decided to place values where. 
+						stringList.add(i-numberDuplicates+emptyCounter, String.valueOf(intArray.get(i)));
+					} else {
+						 //Just add an empty line here and increment counter while array(i+1) != array(i)+1
+						for (int lastValue = intArray.get(i-1)+1; lastValue < intArray.get(i); lastValue++) {
+							stringList.add(i-numberDuplicates+emptyCounter, "LINE EMPTY");
+							emptyCounter++;
+						}
+					
+						//Now add the specific entry 
+						indexFirstOccurence = i;
+						stringList.add(i-numberDuplicates+emptyCounter, String.valueOf(intArray.get(i)));
+					}
 				}
 			}
+			/*
+			 *  @NOTE Might need to add for loop here to check if max 
+			 *  value in your intArray is equal to maxModulo (arraysize - 1)
+			 *  If not, fill the last portion of array with EMPTY LINES 
+			 *  e.g. if last hash value is 97 and array size is 99
+			 *  we need to add two EMPTY LINES (fro 98 and 99). 
+			 */
+			
 		}
 		return stringList; 
 	}

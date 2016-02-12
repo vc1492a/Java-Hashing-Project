@@ -93,10 +93,13 @@ public class hashing {
 			//            outputFilePath2 = scan.next();
 			
 			
-			//@NOTE HARD CODED. 
-			inputFilePath = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/input.txt";
-			outputFilePath1 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output1.txt";
-			outputFilePath2 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output2.txt";
+			//@NOTE HARD CODED.
+            inputFilePath = "assets/input.txt";
+            outputFilePath1 = "assets/output1.txt";
+            outputFilePath2 = "assets/output2.txt";
+			//inputFilePath = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/input.txt";
+			//outputFilePath1 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output1.txt";
+			//outputFilePath2 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output2.txt";
 
 
 		}
@@ -321,32 +324,29 @@ public class hashing {
 
 		try {
 
-			/* there's probably a nice way to print out the array list instead of converting to array */
+            // import the file writer
+            FileWriter writer = new FileWriter(outputFilePath1);
 
-			BufferedWriter br = new BufferedWriter(new FileWriter(outputFilePath1));
-			StringBuilder sb = new StringBuilder();
+            // write the output1.txt file
+            for(String str: namesOutString1) {
 
-			Integer[] namesOut = new Integer[names.size()]; // create array for hashed names
+                writer.write(str);
+                writer.write('\n');
 
-			// copy the content into the new array
-			for (int i = 0; i < names.size(); i++ ) {
+            }
 
-				namesOut[i] = namesOut1.get(i);
+            // write the output2.txt file
+            for(String str: namesOutString2) {
 
-			}
+                writer.write(str);
+                writer.write('\n');
 
-			for (int i = 0; i < lines; i++) {
+            }
 
-				sb.append(namesOut[i]); // append the name
-				sb.append("\n"); // start a new line
+            writer.close(); // close the writer
 
-			}
-
-			br.write(sb.toString()); // write the contents of the loop to csv
-			br.close(); // close the writer */
-
-			// print message
-			System.out.println("A file has been written to " + outputFilePath1);
+            // print message
+            System.out.println("A file has been written to " + outputFilePath1 + " and " + outputFilePath2);
 
 
 		}

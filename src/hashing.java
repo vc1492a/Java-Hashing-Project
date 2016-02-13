@@ -12,14 +12,8 @@
  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-// ToDo
-// include the two hashing functions
-// write the results of the hashing functions to the specified output directory
-// create a console menu
-
 import java.util.Scanner; // import the scanner
 import java.io.BufferedReader; // for reading the file
-import java.io.BufferedWriter; // for writing the file
 import java.io.FileReader; // for reading the file
 import java.io.FileWriter; // for writing the file
 import java.util.ArrayList; // for storing the input file contents
@@ -32,6 +26,7 @@ public class hashing {
 	public static String inputFilePath; // input file path
 	public static String outputFilePath1; // output file path
 	public static String outputFilePath2; // output file path
+	public static String outputFilePath3; // output file path
 
 	public static int lines; // line count
 	private static ArrayList<String> names = new ArrayList<String>(); // array for names
@@ -41,7 +36,6 @@ public class hashing {
 	private static ArrayList<String> namesOutString2 = new ArrayList<String>(); //Final array used to output strings of names 2
 	private static ArrayList<Integer> namesOut3 = new ArrayList<Integer>(); // array for hashed names 2
 	private static ArrayList<String> namesOutString3 = new ArrayList<String>(); //Final array used to output strings of names 2
-
 
 	public static void main(String args[]) {
 
@@ -79,6 +73,15 @@ public class hashing {
 
 			// ask the user to specify the array size, integer only
 			System.out.println("Enter the desired array size: ");
+
+            // input validation
+            while (!scan.hasNextInt()) {
+
+                printError("please enter an integer");
+                scan.next();
+
+            }
+
 			arraySize = scan.nextInt();
 			//
 			//            // ask the user to specify the input file path
@@ -92,16 +95,16 @@ public class hashing {
 			//            // ask the user to specify the output file path
 			//            System.out.println("Enter the output file path (2): ");
 			//            outputFilePath2 = scan.next();
-			
+
+            //            // ask the user to specify the output file path
+            //            System.out.println("Enter the output file path (3): ");
+            //            outputFilePath3 = scan.next();
 			
 //			//@NOTE HARD CODED.
             inputFilePath = "assets/input.txt";
             outputFilePath1 = "assets/output1.txt";
             outputFilePath2 = "assets/output2.txt";
-//			inputFilePath = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/input.txt";
-//			outputFilePath1 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output1.txt";
-//			outputFilePath2 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output2.txt";
-
+            outputFilePath3 = "assets/output3.txt";
 
 		}
 
@@ -174,24 +177,20 @@ public class hashing {
 
 		}
 
-
-
 		//Java's own hashcode
 		for (int i = 0; i < names.size(); i++) { // needs to be changed to array size
 
 			String toHash = names.get(i);
-			System.out.println(toHash.hashCode());
 			namesOut2.add(toHash.hashCode() % arraySize);
+
 		}
-		
-		
+
 		//Our own hash
 		for (int i = 0; i < names.size(); i++) {
 			int hash = 7; 
 			String currentString = names.get(i); //get the name
 			
 			int lengthOfName = currentString.length();
-			int sumAscii = 0; //Use to sum values of char asciis in string
 
 			for (int j = 0; j < lengthOfName; j++ ) {
 				int currentChar = (int) currentString.charAt(j);
@@ -200,8 +199,6 @@ public class hashing {
 			int hashValue = hash % arraySize; 
 			namesOut3.add(hashValue); 
 		}
-		
-		
 
 		namesOutString1 = sortAndSolveCollisions(namesOut1);
 		namesOutString2 = sortAndSolveCollisions(namesOut2);
@@ -230,17 +227,6 @@ public class hashing {
 		}
 
 	}
-
-
-	/*
-	 * @Note: IMPORTANT NOTE
-	 * In hints (2), says that one should use linked list where
-	 *  each node contains a string, for which "head" will be corresponding 
-	 *  element in array. 
-	 *  
-	 *  So instead of adding Integers to String array with commas and space,
-	 * should also have an array of LINKED LISTS (Will do it tomorrow) 
-	 */
 
 	/**
 	 *
@@ -313,6 +299,7 @@ public class hashing {
 					}
 
                     else {
+
 						 //Just add an empty line here and increment counter while array(i+1) != array(i)+1
 						for (int lastValue = intArray.get(i-1)+1; lastValue < intArray.get(i); lastValue++) {
 
@@ -324,32 +311,13 @@ public class hashing {
 						//Now add the specific entry 
 						indexFirstOccurence = i;
 						stringList.add(i-numberDuplicates+emptyCounter, String.valueOf(intArray.get(i)));
+
 					}
 
 				}
 
 			}
-			/*
-			 *  @NOTE Might need to add for loop here to check if max 
-			 *  value in your intArray is equal to maxModulo (arraysize - 1)
-			 *  If not, fill the last portion of array with EMPTY LINES 
-			 *  e.g. if last hash value is 97 and array size is 99
-			 *  we need to add two EMPTY LINES (fro 98 and 99). 
-			 */
-			
-			/*
-			 * @NOTE: HOW TO TEST THIS???
-			 * WILL COMMENT OUT FOR NOW TO MAKE SURE NOT MESSING ANYTHING UP 
-			 * 
-			 * Works with current hash method #3. Adds lines for 97 98 99 
-			 * 
-			 * 
-			 * Let's do this here: 
-			 * Get the last value in the array.
-			 * Can do this here, because the way things were done above 
-			 * we cannot get a "LINE EMPTY" as the last element of our array.
-			 * We will actually fetch value from our integer array
-			 */
+
 			int lastValue = intArray.get(intArray.size()-1); //Get the last element
 			
 			//Max value of hash code is, for ex, 99 (99%100 = 99, while 100%100 = 0)
@@ -362,10 +330,7 @@ public class hashing {
 					emptyCounter++;
 				}
 			}
-			
-			
-			
-			
+
 			/*
 			 * PERFORMANCE METRIC 
 			 * REQUIREMENTS PART 4
@@ -380,8 +345,8 @@ public class hashing {
 				
 		}
 		
-		
-		return stringList; 
+		return stringList;
+
 	}
 
 	/**
@@ -392,28 +357,41 @@ public class hashing {
 		try {
 
             // import the file writer
-            FileWriter writer = new FileWriter(outputFilePath1);
+            FileWriter writer1 = new FileWriter(outputFilePath1);
+            FileWriter writer2 = new FileWriter(outputFilePath2);
+            FileWriter writer3 = new FileWriter(outputFilePath3);
+
 
             // write the output1.txt file
             for(String str: namesOutString1) {
 
-                writer.write(str);
-                writer.write('\n');
+                writer1.write(str);
+                writer1.write('\n');
 
             }
 
             // write the output2.txt file
             for(String str: namesOutString2) {
 
-                writer.write(str);
-                writer.write('\n');
+                writer2.write(str);
+                writer2.write('\n');
 
             }
 
-            writer.close(); // close the writer
+            // write the output3.txt file
+            for(String str: namesOutString3) {
+
+                writer3.write(str);
+                writer3.write('\n');
+
+            }
+
+            writer1.close(); // close the writer
+            writer2.close(); // close the writer
+            writer3.close(); // close the writer
 
             // print message
-            System.out.println("A file has been written to " + outputFilePath1 + " and " + outputFilePath2);
+            System.out.println("A file has been written to " + outputFilePath1 + " and " + outputFilePath2 + " and " + outputFilePath3);
 
 		}
 

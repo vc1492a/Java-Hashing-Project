@@ -1,6 +1,5 @@
-# Simple Hashing in Java
+## Simple Hashing in Java
 
-## asks for user input
-## opens the supplied .txt file
-## executes the hashing
-## outputs the new file
+A set of simple hashing exercises in Java.
+
+The package asks for user input, then executes three separate hashing algorithms on a set of text data while also assessing performance. The output is then printed in the console and written to separate txt files.

@@ -39,7 +39,8 @@ public class hashing {
 	private static ArrayList<String> namesOutString1 = new ArrayList<String>(); // final array used to output strings of names 1
 	private static ArrayList<Integer> namesOut2 = new ArrayList<Integer>(); // array for hashed names 2
 	private static ArrayList<String> namesOutString2 = new ArrayList<String>(); //Final array used to output strings of names 2
-
+	private static ArrayList<Integer> namesOut3 = new ArrayList<Integer>(); // array for hashed names 2
+	private static ArrayList<String> namesOutString3 = new ArrayList<String>(); //Final array used to output strings of names 2
 
 
 	public static void main(String args[]) {
@@ -93,13 +94,13 @@ public class hashing {
 			//            outputFilePath2 = scan.next();
 			
 			
-			//@NOTE HARD CODED.
-            inputFilePath = "assets/input.txt";
-            outputFilePath1 = "assets/output1.txt";
-            outputFilePath2 = "assets/output2.txt";
-			//inputFilePath = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/input.txt";
-			//outputFilePath1 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output1.txt";
-			//outputFilePath2 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output2.txt";
+//			//@NOTE HARD CODED.
+//            inputFilePath = "assets/input.txt";
+//            outputFilePath1 = "assets/output1.txt";
+//            outputFilePath2 = "assets/output2.txt";
+			inputFilePath = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/input.txt";
+			outputFilePath1 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output1.txt";
+			outputFilePath2 = "/Users/elieharik/Desktop/WORK/NORTHWESTERN/Winter Quarter/MSiA490 - Python Java/Project/Project1/Project/assets/output2.txt";
 
 
 		}
@@ -152,6 +153,7 @@ public class hashing {
 	 */
 	public static void hashTheFile() {
 
+		//Hash method 1. 
 		for (int i = 0; i < names.size(); i++) {
 
 			String currentString = names.get(i);
@@ -174,18 +176,36 @@ public class hashing {
 
 
 
-
+		//Java's own hashcode
 		for (int i = 0; i < names.size(); i++) { // needs to be changed to array size
 
 			String toHash = names.get(i);
 			System.out.println(toHash.hashCode());
 			namesOut2.add(toHash.hashCode() % arraySize);
-
-
 		}
+		
+		
+		//Our own hash
+		for (int i = 0; i < names.size(); i++) {
+			int hash = 7; 
+			String currentString = names.get(i); //get the name
+			
+			int lengthOfName = currentString.length();
+			int sumAscii = 0; //Use to sum values of char asciis in string
+
+			for (int j = 0; j < lengthOfName; j++ ) {
+				int currentChar = (int) currentString.charAt(j);
+				hash = hash*31 + currentChar; 
+			}
+			int hashValue = hash % arraySize; 
+			namesOut3.add(hashValue); 
+		}
+		
+		
 
 		namesOutString1 = sortAndSolveCollisions(namesOut1);
 		namesOutString2 = sortAndSolveCollisions(namesOut2);
+		namesOutString3 = sortAndSolveCollisions(namesOut3);
 
 		//@NOTE @TEST
 		System.out.println("\n\n\nNAMEOUTSTRING1");
@@ -197,6 +217,13 @@ public class hashing {
 		
 		System.out.println("\n\n\n\nNAMEOUTSTRING2");
 		for (String s : namesOutString2) {
+
+			System.out.println(s);
+
+		}
+		
+		System.out.println("\n\n\n\nNAMEOUTSTRING3");
+		for (String s : namesOutString3) {
 
 			System.out.println(s);
 
@@ -309,6 +336,34 @@ public class hashing {
 			 *  e.g. if last hash value is 97 and array size is 99
 			 *  we need to add two EMPTY LINES (fro 98 and 99). 
 			 */
+			
+			/*
+			 * @NOTE: HOW TO TEST THIS???
+			 * WILL COMMENT OUT FOR NOW TO MAKE SURE NOT MESSING ANYTHING UP 
+			 * 
+			 * Works with current hash method #3. Adds lines for 97 98 99 
+			 * 
+			 * 
+			 * Let's do this here: 
+			 * Get the last value in the array.
+			 * Can do this here, because the way things were done above 
+			 * we cannot get a "LINE EMPTY" as the last element of our array.
+			 * We will actually fetch value from our integer array
+			 */
+			int lastValue = intArray.get(intArray.size()-1); //Get the last element
+			
+			//Max value of hash code is, for ex, 99 (99%100 = 99, while 100%100 = 0)
+			if (lastValue < intArray.size()-1) {
+				//Get the difference between our max hash code value and max possible value
+				int difference = intArray.size()-1-lastValue;
+				for (int i = 0; i < difference; i++) {
+					//Add a new EMPTY LINE 
+					stringList.add("EMPTY LINE");
+					emptyCounter++;
+				}
+			}
+			
+			
 			
 			
 			/*
